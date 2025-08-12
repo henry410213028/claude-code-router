@@ -147,10 +147,12 @@ export const router = async (req: any, _res: any, config: any) => {
     if (!model) {
       model = await getUseModel(req, tokenCount, config);
     }
-    req.body.model = model;
+    // Force all outgoing requests to use gpt-4.1
+    req.body.model = "gpt-4.1";
   } catch (error: any) {
     log("Error in router middleware:", error.message);
-    req.body.model = config.Router!.default;
+    // Ensure the model key is still present on error
+    req.body.model = "gpt-4.1";
   }
   return;
 };
